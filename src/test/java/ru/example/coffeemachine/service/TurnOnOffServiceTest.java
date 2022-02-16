@@ -11,6 +11,7 @@ import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.config.statemachine.wrapper.SendWrapper;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
+import ru.example.coffeemachine.service.api.TurnOnOffService;
 
 @SpringBootTest
 class TurnOnOffServiceTest {

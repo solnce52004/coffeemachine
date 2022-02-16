@@ -58,6 +58,11 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
         return UUID.randomUUID().toString();
     }
 
+//    @Bean
+//    @Profile("dev")
+//    public StateMachineListener<States, Events> listener() {
+//        return new StateMachineListenerProd();
+//    }
     @Bean
     @Profile("prod")
     public StateMachineListener<States, Events> listener() {
@@ -74,8 +79,7 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
         states
                 .withStates()
                 .initial(States.TURNED_OFF)
-                .states(EnumSet.allOf(States.class))
-                .end(States.TURNED_OFF);
+                .states(EnumSet.allOf(States.class));
     }
 
     @Override
@@ -103,7 +107,7 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
                 .target(States.STARTED_BREW)
                 .event(Events.PUSH_START_BREW)
                 .action(register.getCommand(Events.PUSH_START_BREW))
-                .guard(checkedResourcesGuard())
+//                .guard(checkedResourcesGuard())
 
                 // уменьшаем ресурсы
                 .and()

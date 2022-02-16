@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
-import ru.example.coffeemachine.service.CheckResourcesService;
+import ru.example.coffeemachine.service.api.CheckResourcesService;
 
 @RestController
 @RequestMapping(

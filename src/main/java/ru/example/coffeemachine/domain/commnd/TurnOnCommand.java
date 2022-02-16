@@ -25,12 +25,8 @@ public class TurnOnCommand implements Command {
 
     @Override
     public void execute(StateContext<States, Events> context) {
-        //Thread.sleep(millis);
-        //select from db
-        //save in db
         service.turnOn();
 
-        //set info in StateContext
         log.info("Event: {}", context.getEvent());
         context.getExtendedState()
                 .getVariables()

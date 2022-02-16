@@ -1,6 +1,6 @@
 package ru.example.coffeemachine.domain;
 
-public interface CoffeeMachine {
+public interface CoffeeMachineInterface {
     void turnOn();
 
     void checkResources();

@@ -22,15 +22,11 @@ public class CheckResourcesCommand implements Command {
 
     @Override
     public void execute(StateContext<States, Events> context) {
-        //Thread.sleep(millis);
-        //select/save in db
         service.checkResources();
-
         log.info("Event: {}", context.getEvent());
 
-        //set info in StateContext for guard
         context.getExtendedState()
                 .getVariables()
-                .put(Guards.IS_CHECKED_RESOURCES.name(), service.isCheckedResources());
+                .put(Guards.IS_CHECKED_RESOURCES.name(), true);
     }
 }

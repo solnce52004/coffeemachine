@@ -75,4 +75,34 @@ public class StateMachineTest {
                         .build();
         plan.test();
     }
+
+    @Test
+    public void testMissingCheckResources() throws Exception {
+        StateMachineTestPlan<States, Events> plan =
+                StateMachineTestPlanBuilder
+                        .<States, Events>builder()
+                        .defaultAwaitTime(2)
+                        .stateMachine(stateMachine)
+
+                        .step()
+                        .expectStates(States.TURNED_OFF)
+                        .expectStateChanged(0)
+
+                        .and()
+                        .step()
+                        .sendEvent(Events.PUSH_TURN_ON)
+                        .expectState(States.TURNED_ON)
+                        .expectStateChanged(1)
+
+                        //missing CHECK_RESOURCES
+                        .and()
+                        .step()
+                        .sendEvent(Events.PUSH_START_BREW)
+                        .expectState(States.TURNED_ON)
+                        .expectEventNotAccepted(1)
+
+                        .and()
+                        .build();
+        plan.test();
+    }
 }

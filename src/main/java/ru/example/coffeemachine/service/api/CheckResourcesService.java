@@ -1,4 +1,4 @@
-package ru.example.coffeemachine.service;
+package ru.example.coffeemachine.service.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,29 +11,36 @@ import ru.example.coffeemachine.dto.ResponseMessageDTO;
 
 @Service
 @Slf4j
-public class StartBrewService {
+public class CheckResourcesService {
     private final StateMachine<States, Events> stateMachine;
     private final SendWrapper wrapper;
 
     @Autowired
-    public StartBrewService(SendWrapper wrapper) {
+    public CheckResourcesService(SendWrapper wrapper) {
         this.wrapper = wrapper;
         this.stateMachine = wrapper.getStateMachine();
     }
 
-    public ResponseMessageDTO startBrew() {
-        //нажали кнопу - передаются внутренние команды датчикам
-        wrapper.sendMonoEvent(Events.PUSH_START_BREW);
-        //автоматически - начался процесс варки
-        wrapper.sendMonoEvent(Events.BREW);
+    public ResponseMessageDTO checkResources() {
 
+        log.info(stateMachine.getState().getId().toString());
+
+        wrapper.sendMonoEvent(Events.CHECK_RESOURCES);
         final States curState = stateMachine.getState().getId();
 
         log.info(this.stateMachine.getUuid().toString());
-        log.info("pushed startBrew");
+        log.info("checkResources");
+
+        //проверить в бд привязанные к ид см ресурсы
+        //есть ли?
+        //сколько?
+        //по умолчанию в кофеварке 0/0
+        //пополнить, если надо 100/100
+        //изменить статус - сохранить его в базе
+        //сделать связь ид см с ресурсами
 
         return new ResponseMessageDTO()
-                .setText("State on PUSH_START and BREW is " + curState)
+                .setText("State on checkResources is " + curState)
                 .setState(curState);
     }
 }

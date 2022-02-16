@@ -1,4 +1,4 @@
-package ru.example.coffeemachine.domain.checker;
+package ru.example.coffeemachine.service.checker;
 
 import java.util.concurrent.Callable;
 

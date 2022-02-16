@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
-import ru.example.coffeemachine.service.StartBrewService;
+import ru.example.coffeemachine.service.api.StartBrewService;
 
 @RestController
 @RequestMapping(
@@ -27,7 +27,7 @@ public class StartBrewController {
     public ResponseEntity<ResponseMessageDTO> pushStart() {
         final ResponseMessageDTO msg = startBrewService.startBrew();
 
-        if (msg.getState() != States.STARTED_BREW) {
+        if (msg.getState() != States.DONE) {
             return new ResponseEntity<>(msg, HttpStatus.NOT_MODIFIED);
         }
 

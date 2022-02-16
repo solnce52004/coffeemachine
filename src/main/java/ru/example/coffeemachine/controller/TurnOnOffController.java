@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
-import ru.example.coffeemachine.service.TurnOnOffService;
+import ru.example.coffeemachine.service.api.TurnOnOffService;
 
 @RestController
 @RequestMapping(
         path ="/api/v1/turn",
         produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "turn on", value = "TurnOnOffController")
+@Api(tags = "turn on/off", value = "TurnOnOffController")
 @AllArgsConstructor
 public class TurnOnOffController {
     private final TurnOnOffService turnOnOffService;

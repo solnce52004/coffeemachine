@@ -19,10 +19,6 @@ public class TurnOffCommand implements Command {
 
     @Override
     public void execute(StateContext<States, Events> context) {
-        //Thread.sleep(millis);
-        //select from db
-        //save in db
-        //set info in StateContext
         service.turnOff();
     }
 }

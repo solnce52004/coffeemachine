@@ -1,4 +1,4 @@
-package ru.example.coffeemachine.service;
+package ru.example.coffeemachine.service.api;
 
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +32,10 @@ public class TurnOnOffService {
 
         final States curState = stateMachine.getState().getId();
 
+        //save in db
+        //выдать ид см (процессу)
+        //сохранить под этим ид стейт
+
         return new ResponseMessageDTO()
                 .setText("State on PUSH_TURN_ON is " + curState)
                 .setState(curState);
@@ -44,6 +48,9 @@ public class TurnOnOffService {
         log.info("pushed turnOff");
 
         final States curState = stateMachine.getState().getId();
+
+        //меняем статус in db
+
         return new ResponseMessageDTO()
                 .setText("State on PUSH_TURN_OFF is " + curState)
                 .setState(curState);

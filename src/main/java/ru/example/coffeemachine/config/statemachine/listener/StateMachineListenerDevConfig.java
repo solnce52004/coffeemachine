@@ -18,6 +18,7 @@ import ru.example.coffeemachine.config.statemachine.enums.States;
 import java.util.Optional;
 
 @Configuration
+//@Profile("prod")
 @Profile("dev")
 @Slf4j
 public class StateMachineListenerDevConfig {
