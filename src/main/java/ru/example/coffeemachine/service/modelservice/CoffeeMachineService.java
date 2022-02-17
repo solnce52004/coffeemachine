@@ -29,4 +29,13 @@ public class CoffeeMachineService {
                 .map(CoffeeMachine::getResource)
                 .orElseGet(resourceService::createEmpty);
     }
+
+    public Resource findLatestByUuidOrCreateFull(String uuid) {
+        return findLatestByStateMachineUUID(uuid)
+                .map(CoffeeMachine::getResource)
+                .filter(r -> r.getWater() == 100)
+                .filter(r -> r.getCoffee() == 100)
+                .orElseGet(resourceService::createFull);
+    }
+
 }

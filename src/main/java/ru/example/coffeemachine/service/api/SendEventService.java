@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Service;
 import ru.example.coffeemachine.config.statemachine.enums.Events;
+import ru.example.coffeemachine.config.statemachine.enums.Guards;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.config.statemachine.wrapper.SendWrapper;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
@@ -25,6 +26,7 @@ public class SendEventService {
     }
 
     public ResponseMessageDTO turnOn() {
+        putPrevStateInContext(stateMachine);
         wrapper.sendMonoEvent(Events.PUSH_TURN_ON);
 
         return responseService.getResponseMessageDTO(
@@ -35,6 +37,7 @@ public class SendEventService {
     }
 
     public ResponseMessageDTO checkResources() {
+        putPrevStateInContext(stateMachine);
         wrapper.sendMonoEvent(Events.CHECK_RESOURCES);
 
         return responseService.getResponseMessageDTO(
@@ -45,6 +48,7 @@ public class SendEventService {
     }
 
     public ResponseMessageDTO startBrew() {
+        putPrevStateInContext(stateMachine);
         //нажали кнопу - передаются внутренние команды датчикам
         wrapper.sendMonoEvent(Events.PUSH_START_BREW);
         //автоматически - начался процесс варки
@@ -58,6 +62,7 @@ public class SendEventService {
     }
 
     public ResponseMessageDTO turnOff() {
+        putPrevStateInContext(stateMachine);
         wrapper.sendMonoEvent(Events.PUSH_TURN_OFF);
 
         return responseService.getResponseMessageDTO(
@@ -65,5 +70,15 @@ public class SendEventService {
                 Events.PUSH_TURN_OFF,
                 States.TURNED_OFF
         );
+    }
+
+    private void putPrevStateInContext(StateMachine<States, Events> stateMachine) {
+        stateMachine
+                .getExtendedState()
+                .getVariables()
+                .put(
+                        Guards.PREV_STATE.name(),
+                        stateMachine.getState().getId()
+                );
     }
 }

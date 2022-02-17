@@ -53,16 +53,11 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
 
     @Bean
     @Scope(value = ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public String randomUUID(){
+    public String randomUUID() {
         //TODO: id - on once run, uuid - on each autowiring?
         return UUID.randomUUID().toString();
     }
 
-//    @Bean
-//    @Profile("dev")
-//    public StateMachineListener<States, Events> listener() {
-//        return new StateMachineListenerProd();
-//    }
     @Bean
     @Profile("prod")
     public StateMachineListener<States, Events> listener() {
@@ -100,16 +95,28 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
                 .event(Events.CHECK_RESOURCES)
                 .action(register.getCommand(Events.CHECK_RESOURCES))
 
-                //просто жмем кнопку
+                .and()
+                .withExternal()
+                .source(States.TURNED_ON)
+                .target(States.TURNED_OFF)
+                .event(Events.PUSH_TURN_OFF)
+                .action(register.getCommand(Events.PUSH_TURN_OFF))
+
                 .and()
                 .withExternal()
                 .source(States.CHECKED_RESOURCES)
                 .target(States.STARTED_BREW)
                 .event(Events.PUSH_START_BREW)
                 .action(register.getCommand(Events.PUSH_START_BREW))
-//                .guard(checkedResourcesGuard())
+                .guard(isCheckedResourcesGuard())
 
-                // уменьшаем ресурсы
+                .and()
+                .withExternal()
+                .source(States.CHECKED_RESOURCES)
+                .target(States.TURNED_OFF)
+                .event(Events.PUSH_TURN_OFF)
+                .action(register.getCommand(Events.PUSH_TURN_OFF))
+
                 .and()
                 .withExternal()
                 .source(States.STARTED_BREW)
@@ -120,12 +127,19 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
                 .and()
                 .withExternal()
                 .source(States.DONE)
+                .target(States.CHECKED_RESOURCES)
+                .event(Events.CHECK_RESOURCES)
+                .action(register.getCommand(Events.CHECK_RESOURCES))
+
+                .and()
+                .withExternal()
+                .source(States.DONE)
                 .target(States.TURNED_OFF)
                 .event(Events.PUSH_TURN_OFF)
                 .action(register.getCommand(Events.PUSH_TURN_OFF));
     }
 
-    private Guard<States, Events> checkedResourcesGuard() {
+    private Guard<States, Events> isCheckedResourcesGuard() {
         return context -> (Boolean) context
                 .getExtendedState()
                 .getVariables()
@@ -136,8 +150,8 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
         final List<String> list = commandList.stream()
                 .map(Command::getEvent)
                 .map(Enum::name)
-                .peek(log::info)
+                .peek(log::debug)
                 .collect(Collectors.toList());
-        log.info("Count of commands implements Action: {}", list.size());
+        log.debug("Count of commands implements Action: {}", list.size());
     }
 }

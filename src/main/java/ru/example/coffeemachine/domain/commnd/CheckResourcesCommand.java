@@ -23,10 +23,11 @@ public class CheckResourcesCommand implements Command {
     @Override
     public void execute(StateContext<States, Events> context) {
         service.checkResources();
-        log.info("Event: {}", context.getEvent());
 
         context.getExtendedState()
                 .getVariables()
                 .put(Guards.IS_CHECKED_RESOURCES.name(), true);
+
+        log.info("Event: {}", context.getEvent());
     }
 }

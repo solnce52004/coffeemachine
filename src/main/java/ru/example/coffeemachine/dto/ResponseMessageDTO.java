@@ -3,6 +3,7 @@ package ru.example.coffeemachine.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 
 import java.io.Serializable;
@@ -11,6 +12,8 @@ import java.io.Serializable;
 @Accessors(chain = true)
 @Data
 public class ResponseMessageDTO implements Serializable {
-    String text;
-    States state;
+    private String text;
+    private String debug;
+    private Events event;
+    private States state;
 }
