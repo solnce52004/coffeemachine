@@ -21,8 +21,7 @@ public class ResponseService {
     public ResponseMessageDTO getResponseMessageDTO(
             StateMachine<States, Events> stateMachine,
             Events event,
-            States state,
-            Boolean resetResources
+            States state
     ) {
         final States curState = stateMachine.getState().getId();
         final String curUUID = stateMachine.getUuid().toString();
@@ -30,9 +29,9 @@ public class ResponseService {
         LogHelper.logAfterSend(event, curState, curUUID, curID);
 
         if (curState == state) {
-            final Resource resource = resetResources
-                    ? resourceService.createFull()
-                    : machineService.findLatestResourceByUUID(curUUID);
+            Resource resource = resourceService.findById(
+                    getLatestResource(curState, curUUID).getId()
+            );
 
             final CoffeeMachine coffeeMachine = new CoffeeMachine()
                     .setMachineUUID(curUUID)
@@ -46,5 +45,24 @@ public class ResponseService {
         return new ResponseMessageDTO()
                 .setText(String.format("After event %S state is %s", event, curState))
                 .setState(curState);
+    }
+
+    private Resource getLatestResource(States state, String uuid) {
+        Resource resource;
+
+        switch (state) {
+            case TURNED_ON:
+            case DONE:
+                resource = resourceService.createEmpty();
+                break;
+            case CHECKED_RESOURCES:
+                resource = resourceService.createFull();
+                break;
+            default:
+                resource = machineService.findLatestResourceByUUID(uuid);
+                break;
+        }
+
+        return resource;
     }
 }

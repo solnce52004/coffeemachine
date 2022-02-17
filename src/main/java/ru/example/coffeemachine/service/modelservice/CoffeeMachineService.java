@@ -17,7 +17,7 @@ public class CoffeeMachineService {
     private final CoffeeMachineRepository coffeeMachineRepository;
 
     public void persistCoffeeMachine(CoffeeMachine coffeeMachine) {
-        coffeeMachineRepository.save(coffeeMachine);
+        coffeeMachineRepository.saveAndFlush(coffeeMachine);
     }
 
     public Optional<CoffeeMachine> findLatestByStateMachineUUID(String uuid) {

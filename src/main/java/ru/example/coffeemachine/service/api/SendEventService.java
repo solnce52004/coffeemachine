@@ -30,8 +30,7 @@ public class SendEventService {
         return responseService.getResponseMessageDTO(
                 stateMachine,
                 Events.PUSH_TURN_ON,
-                States.TURNED_ON,
-                false
+                States.TURNED_ON
         );
     }
 
@@ -41,8 +40,7 @@ public class SendEventService {
         return responseService.getResponseMessageDTO(
                 stateMachine,
                 Events.CHECK_RESOURCES,
-                States.CHECKED_RESOURCES,
-                true
+                States.CHECKED_RESOURCES
         );
     }
 
@@ -55,8 +53,7 @@ public class SendEventService {
         return responseService.getResponseMessageDTO(
                 stateMachine,
                 Events.PUSH_START_BREW,
-                States.DONE,
-                false
+                States.DONE
         );
     }
 
@@ -66,8 +63,7 @@ public class SendEventService {
         return responseService.getResponseMessageDTO(
                 stateMachine,
                 Events.PUSH_TURN_OFF,
-                States.TURNED_OFF,
-                false
+                States.TURNED_OFF
         );
     }
 }

@@ -39,25 +39,28 @@ public class Resource {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
-    @org.hibernate.annotations.Generated(GenerationTime.ALWAYS) //генерит время +3
-    @Column(name="created_at", updatable = false, insertable = false, columnDefinition = "TIMESTAMP")
+    @Generated(GenerationTime.ALWAYS)
+    @Column(name="created_at",
+            updatable = false,
+            insertable = false,
+            nullable = false,
+            columnDefinition = "TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Date createdAt;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    @Column(name="updated_at", insertable = false, columnDefinition = "TIMESTAMP")
+    @Column(name="updated_at",
+            insertable = false,
+            nullable = false,
+            columnDefinition = "TIMESTAMP")
+    @ColumnDefault("CURRENT_TIMESTAMP")
     private Date updatedAt;
 
-    ///
-    @OneToMany(
-            mappedBy = "resource",
-            fetch = FetchType.LAZY
-//            , cascade = CascadeType.ALL
-    )
+    @OneToMany(mappedBy = "resource", fetch = FetchType.LAZY)
     @Fetch(value = FetchMode.JOIN)
     private Set<CoffeeMachine> coffeeMachines = new HashSet<>();
-    ///
 
     @Override
     public boolean equals(Object o) {

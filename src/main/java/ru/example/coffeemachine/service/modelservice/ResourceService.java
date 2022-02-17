@@ -22,4 +22,8 @@ public class ResourceService {
     public Resource createEmpty() {
         return resourceRepository.save(new Resource());
     }
+
+    public Resource findById(Long id) {
+        return resourceRepository.findById(id).orElse(null);
+    }
 }

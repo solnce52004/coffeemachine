@@ -16,8 +16,7 @@ import java.util.concurrent.TimeUnit;
 public class CoffeeMachineImpl implements CoffeeMachineInterface {
 
     private ExecutorService executor;
-    @Getter
-    @Setter
+    @Getter @Setter
     private CompletableFuture<Boolean> task;
 
     @Override
