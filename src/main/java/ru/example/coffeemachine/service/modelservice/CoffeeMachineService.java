@@ -24,7 +24,7 @@ public class CoffeeMachineService {
         return coffeeMachineRepository.findLatestByUUID(uuid);
     }
 
-    public Resource findLatestResourceByUUID(String uuid) {
+    public Resource findLatestByUuidOrCreateEmpty(String uuid) {
         return findLatestByStateMachineUUID(uuid)
                 .map(CoffeeMachine::getResource)
                 .orElseGet(resourceService::createEmpty);

@@ -51,7 +51,6 @@ public class ResponseService {
         Resource resource;
 
         switch (state) {
-            case TURNED_ON:
             case DONE:
                 resource = resourceService.createEmpty();
                 break;
@@ -59,7 +58,7 @@ public class ResponseService {
                 resource = resourceService.createFull();
                 break;
             default:
-                resource = machineService.findLatestResourceByUUID(uuid);
+                resource = machineService.findLatestByUuidOrCreateEmpty(uuid);
                 break;
         }
 

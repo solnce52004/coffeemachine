@@ -88,7 +88,7 @@ public class CoffeeMachineImpl implements CoffeeMachineInterface {
 
     private void terminateCoffeeMachine() {
         try {
-            executor.awaitTermination(500, TimeUnit.MILLISECONDS);
+            executor.awaitTermination(100, TimeUnit.MILLISECONDS);
         } catch (InterruptedException ie) {
             log.error(ie.getMessage());
             Thread.currentThread().interrupt();
