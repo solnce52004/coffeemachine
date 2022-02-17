@@ -3,6 +3,7 @@ package ru.example.coffeemachine.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,35 +16,38 @@ import ru.example.coffeemachine.service.api.TurnOnOffService;
 
 @RestController
 @RequestMapping(
-        path ="/api/v1/turn",
+        path = "/api/v1",
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "turn on/off", value = "TurnOnOffController")
 @AllArgsConstructor
+@Slf4j
 public class TurnOnOffController {
     private final TurnOnOffService turnOnOffService;
 
     @ApiOperation(value = "Нажать кнопку ВКЛЮЧИТЬ")
-    @GetMapping( "/on")
+    @GetMapping("/turn-on")
     public ResponseEntity<ResponseMessageDTO> pushTurnOn() {
         final ResponseMessageDTO msg = turnOnOffService.turnOn();
 
-        if (msg.getState() != States.TURNED_ON) {
-            return new ResponseEntity<>(msg, HttpStatus.NOT_MODIFIED);
-        }
+        HttpStatus httpStatus = msg.getState() != States.TURNED_ON
+                ? HttpStatus.METHOD_NOT_ALLOWED
+                : HttpStatus.OK;
 
-        return new ResponseEntity<>(msg, HttpStatus.OK);
+        return new ResponseEntity<>(msg, httpStatus);
     }
 
     @ApiOperation(value = "Нажать кнопку ВЫКЛЮЧИТЬ")
-    @GetMapping("/off")
+    @GetMapping("/turn-off")
     public ResponseEntity<ResponseMessageDTO> pushTurnOff() {
         final ResponseMessageDTO msg = turnOnOffService.turnOff();
 
-        if (msg.getState() != States.TURNED_OFF) {
-            return new ResponseEntity<>(msg, HttpStatus.NOT_MODIFIED);
-        }
+        log.info("TurnOnOffController pushTurnOff msg {}", msg);
 
-        return new ResponseEntity<>(msg, HttpStatus.OK);
+        HttpStatus httpStatus = msg.getState() != States.TURNED_OFF
+                ? HttpStatus.METHOD_NOT_ALLOWED
+                : HttpStatus.OK;
+
+        return new ResponseEntity<>(msg, httpStatus);
     }
 }
 

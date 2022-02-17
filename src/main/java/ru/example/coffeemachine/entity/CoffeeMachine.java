@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.*;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 
@@ -21,6 +22,7 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Accessors(chain = true)
 @DynamicUpdate
 @DynamicInsert
 public class CoffeeMachine {
@@ -29,21 +31,21 @@ public class CoffeeMachine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "machine_id", nullable = false)
+    @Column(name = "machine_id", nullable = false, updatable = false)
     String machineId;
 
-    @Column(name = "machine_uuid", nullable = false)
+    @Column(name = "machine_uuid", nullable = false, updatable = false)
     String machineUUID;
 
     @Column(name = "state", nullable = false)
     States state;
 
     ///
-    @ManyToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(name = "resource_id")
+    @ManyToOne(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource_id",
+            nullable = false,
+            updatable = false)
     @Fetch(value = FetchMode.JOIN)
     private Resource resource = new Resource();
     ///

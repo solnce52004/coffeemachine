@@ -15,7 +15,7 @@ import ru.example.coffeemachine.service.api.StartBrewService;
 
 @RestController
 @RequestMapping(
-        path ="/api/v1",
+        path = "/api/v1",
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "start brew", value = "StartBrewController")
 @AllArgsConstructor
@@ -23,14 +23,14 @@ public class StartBrewController {
     private final StartBrewService startBrewService;
 
     @ApiOperation(value = "Нажать кнопку НАЧАТЬ ГОТОВИТЬ КОФЕ")
-    @GetMapping("/start")
+    @GetMapping("/start-brew")
     public ResponseEntity<ResponseMessageDTO> pushStart() {
         final ResponseMessageDTO msg = startBrewService.startBrew();
 
-        if (msg.getState() != States.DONE) {
-            return new ResponseEntity<>(msg, HttpStatus.NOT_MODIFIED);
-        }
+        HttpStatus httpStatus = msg.getState() != States.DONE
+                ? HttpStatus.METHOD_NOT_ALLOWED
+                : HttpStatus.OK;
 
-        return new ResponseEntity<>(msg, HttpStatus.OK);
+        return new ResponseEntity<>(msg, httpStatus);
     }
 }

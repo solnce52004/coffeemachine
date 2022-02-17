@@ -1,16 +1,16 @@
 package ru.example.coffeemachine.dto;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 
+import java.io.Serializable;
+
 @NoArgsConstructor
 @Accessors(chain = true)
-@Setter
-@Getter
-public class ResponseMessageDTO {
+@Data
+public class ResponseMessageDTO implements Serializable {
     String text;
     States state;
 }

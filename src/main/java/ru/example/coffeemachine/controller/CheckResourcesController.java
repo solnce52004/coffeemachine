@@ -15,7 +15,7 @@ import ru.example.coffeemachine.service.api.CheckResourcesService;
 
 @RestController
 @RequestMapping(
-        path ="/api/v1",
+        path = "/api/v1",
         produces = MediaType.APPLICATION_JSON_VALUE)
 @Api(tags = "check resources", value = "CheckResourcesController")
 @AllArgsConstructor
@@ -23,14 +23,14 @@ public class CheckResourcesController {
     private final CheckResourcesService checkResourcesService;
 
     @ApiOperation(value = "Проверка/пополнение ресурсов (вода, кофе)")
-    @GetMapping("/check")
+    @GetMapping("/check-resources")
     public ResponseEntity<ResponseMessageDTO> check() {
         final ResponseMessageDTO msg = checkResourcesService.checkResources();
 
-        if (msg.getState() != States.CHECKED_RESOURCES) {
-            return new ResponseEntity<>(msg, HttpStatus.NOT_MODIFIED);
-        }
+        HttpStatus httpStatus = msg.getState() != States.CHECKED_RESOURCES
+                ? HttpStatus.METHOD_NOT_ALLOWED
+                : HttpStatus.OK;
 
-        return new ResponseEntity<>(msg, HttpStatus.OK);
+        return new ResponseEntity<>(msg, httpStatus);
     }
 }

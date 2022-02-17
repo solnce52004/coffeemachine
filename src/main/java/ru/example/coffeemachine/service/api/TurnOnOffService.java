@@ -24,14 +24,13 @@ public class TurnOnOffService {
     }
 
     public ResponseMessageDTO turnOn() {
-        //делегируем в ssm (там отработают actions-commands and guards)
         wrapper.sendMonoEvent(Events.PUSH_TURN_ON);
 
         log.info(this.stateMachine.getUuid().toString());
         log.info("pushed turnOn");
 
         final States curState = stateMachine.getState().getId();
-
+        log.info("pushed turnOn curState {}", curState);
         //save in db
         //выдать ид см (процессу)
         //сохранить под этим ид стейт
@@ -44,10 +43,12 @@ public class TurnOnOffService {
     public ResponseMessageDTO turnOff() {
         wrapper.sendMonoEvent(Events.PUSH_TURN_OFF);
 
-        log.info(this.stateMachine.getUuid().toString());
-        log.info("pushed turnOff");
-
         final States curState = stateMachine.getState().getId();
+        final String curUUID = this.stateMachine.getUuid().toString();
+        final String curID = this.stateMachine.getId();
+        log.info("stateAfter  PUSH_TURN_OFF {}", curState);
+        log.info("uuidAfter PUSH_TURN_OFF {}", curUUID);
+        log.info("idAfter PUSH_TURN_OFF {}", curID);
 
         //меняем статус in db
 

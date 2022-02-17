@@ -5,8 +5,6 @@ public interface CoffeeMachineInterface {
 
     void checkResources();
 
-    Boolean isCheckedResources();
-
     void pushStartBrew();
 
     void brewCoffee();
