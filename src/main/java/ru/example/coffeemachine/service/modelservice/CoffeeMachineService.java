@@ -7,7 +7,6 @@ import ru.example.coffeemachine.entity.CoffeeMachine;
 import ru.example.coffeemachine.entity.Resource;
 import ru.example.coffeemachine.repo.CoffeeMachineRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,23 +16,17 @@ public class CoffeeMachineService {
     private final ResourceService resourceService;
     private final CoffeeMachineRepository coffeeMachineRepository;
 
-    public CoffeeMachine createNew() {
-        final Resource resource = resourceService.createEmpty();
-        final CoffeeMachine coffeeMachine = new CoffeeMachine();
-        coffeeMachine.setResource(resource);
-        return coffeeMachineRepository.save(coffeeMachine);
-    }
-
-    public void logNewState(CoffeeMachine coffeeMachine) {
+    public void persistCoffeeMachine(CoffeeMachine coffeeMachine) {
         coffeeMachineRepository.save(coffeeMachine);
-    }
-
-    public List<CoffeeMachine> findAllByStateMachineUUID(String uuid) {
-        return coffeeMachineRepository.findAllByUUID(uuid);
     }
 
     public Optional<CoffeeMachine> findLatestByStateMachineUUID(String uuid) {
         return coffeeMachineRepository.findLatestByUUID(uuid);
     }
 
+    public Resource findLatestResourceByUUID(String uuid) {
+        return findLatestByStateMachineUUID(uuid)
+                .map(CoffeeMachine::getResource)
+                .orElseGet(resourceService::createEmpty);
+    }
 }

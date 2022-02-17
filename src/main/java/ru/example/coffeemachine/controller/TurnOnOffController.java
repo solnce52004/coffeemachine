@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
-import ru.example.coffeemachine.service.api.TurnOnOffService;
+import ru.example.coffeemachine.service.api.SendEventService;
 
 @RestController
 @RequestMapping(
@@ -22,12 +22,12 @@ import ru.example.coffeemachine.service.api.TurnOnOffService;
 @AllArgsConstructor
 @Slf4j
 public class TurnOnOffController {
-    private final TurnOnOffService turnOnOffService;
+    private final SendEventService sendEventService;
 
     @ApiOperation(value = "Нажать кнопку ВКЛЮЧИТЬ")
     @GetMapping("/turn-on")
     public ResponseEntity<ResponseMessageDTO> pushTurnOn() {
-        final ResponseMessageDTO msg = turnOnOffService.turnOn();
+        final ResponseMessageDTO msg = sendEventService.turnOn();
 
         HttpStatus httpStatus = msg.getState() != States.TURNED_ON
                 ? HttpStatus.METHOD_NOT_ALLOWED
@@ -39,7 +39,7 @@ public class TurnOnOffController {
     @ApiOperation(value = "Нажать кнопку ВЫКЛЮЧИТЬ")
     @GetMapping("/turn-off")
     public ResponseEntity<ResponseMessageDTO> pushTurnOff() {
-        final ResponseMessageDTO msg = turnOnOffService.turnOff();
+        final ResponseMessageDTO msg = sendEventService.turnOff();
 
         log.info("TurnOnOffController pushTurnOff msg {}", msg);
 

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
-import ru.example.coffeemachine.service.api.CheckResourcesService;
+import ru.example.coffeemachine.service.api.SendEventService;
 
 @RestController
 @RequestMapping(
@@ -20,12 +20,12 @@ import ru.example.coffeemachine.service.api.CheckResourcesService;
 @Api(tags = "check resources", value = "CheckResourcesController")
 @AllArgsConstructor
 public class CheckResourcesController {
-    private final CheckResourcesService checkResourcesService;
+    private final SendEventService sendEventService;
 
     @ApiOperation(value = "Проверка/пополнение ресурсов (вода, кофе)")
     @GetMapping("/check-resources")
     public ResponseEntity<ResponseMessageDTO> check() {
-        final ResponseMessageDTO msg = checkResourcesService.checkResources();
+        final ResponseMessageDTO msg = sendEventService.checkResources();
 
         HttpStatus httpStatus = msg.getState() != States.CHECKED_RESOURCES
                 ? HttpStatus.METHOD_NOT_ALLOWED
