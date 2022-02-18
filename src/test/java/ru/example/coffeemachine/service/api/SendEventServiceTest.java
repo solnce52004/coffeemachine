@@ -107,7 +107,7 @@ class SendEventServiceTest {
     }
 
     @Test
-    void testBacRequestTurnOnAndGetHttpStatus405() {
+    void testSendRequestBackToTurnOnAndGetHttpStatus405() {
         sendEventService.send(Events.PUSH_TURN_ON);
         sendEventService.send(Events.CHECK_RESOURCES);
         sendEventService.send(Events.PUSH_START_BREW);
