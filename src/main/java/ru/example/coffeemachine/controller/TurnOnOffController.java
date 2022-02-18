@@ -4,13 +4,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.example.coffeemachine.config.statemachine.enums.States;
+import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
 import ru.example.coffeemachine.service.api.SendEventService;
 
@@ -27,27 +26,17 @@ public class TurnOnOffController {
     @ApiOperation(value = "Нажать кнопку ВКЛЮЧИТЬ")
     @GetMapping("/turn-on")
     public ResponseEntity<ResponseMessageDTO> pushTurnOn() {
-        final ResponseMessageDTO msg = sendEventService.turnOn();
 
-        HttpStatus httpStatus = msg.getState() != States.TURNED_ON
-                ? HttpStatus.METHOD_NOT_ALLOWED
-                : HttpStatus.OK;
-
-        return new ResponseEntity<>(msg, httpStatus);
+        final ResponseMessageDTO msg = sendEventService.send(Events.PUSH_TURN_ON);
+        return new ResponseEntity<>(msg, msg.getHttpStatus());
     }
 
     @ApiOperation(value = "Нажать кнопку ВЫКЛЮЧИТЬ")
     @GetMapping("/turn-off")
     public ResponseEntity<ResponseMessageDTO> pushTurnOff() {
-        final ResponseMessageDTO msg = sendEventService.turnOff();
 
-        log.info("TurnOnOffController pushTurnOff msg {}", msg);
-
-        HttpStatus httpStatus = msg.getState() != States.TURNED_OFF
-                ? HttpStatus.METHOD_NOT_ALLOWED
-                : HttpStatus.OK;
-
-        return new ResponseEntity<>(msg, httpStatus);
+        final ResponseMessageDTO msg = sendEventService.send(Events.PUSH_TURN_OFF);
+        return new ResponseEntity<>(msg, msg.getHttpStatus());
     }
 }
 

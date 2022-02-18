@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Component
 @Getter
-public class RegisterCommand {
+public class CommandRegister {
     private final Map<Events, Command> map = new HashMap<>();
 
     public void register(Events event, Command commandAction){

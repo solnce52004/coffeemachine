@@ -21,12 +21,12 @@ import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.config.statemachine.enums.Guards;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.domain.commnd.Command;
-import ru.example.coffeemachine.domain.commnd.RegisterCommand;
+import ru.example.coffeemachine.domain.commnd.CommandRegister;
+import ru.example.coffeemachine.util.LogHelper;
 
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableStateMachineFactory
@@ -35,8 +35,7 @@ import java.util.stream.Collectors;
 public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter<States, Events> {
 
     private final StateMachineRuntimePersister<States, Events, UUID> stateMachineRuntimePersister;
-
-    private final RegisterCommand register;
+    private final CommandRegister register;
     private final List<Command> commandList;
 
     @Override
@@ -79,7 +78,7 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
 
     @Override
     public void configure(StateMachineTransitionConfigurer<States, Events> transitions) throws Exception {
-        logCommandList();
+        LogHelper.logCommandList(commandList);
 
         transitions
                 .withExternal()
@@ -144,14 +143,5 @@ public class StateMachineConfiguration extends EnumStateMachineConfigurerAdapter
                 .getExtendedState()
                 .getVariables()
                 .get(Guards.IS_CHECKED_RESOURCES.name());
-    }
-
-    private void logCommandList() {
-        final List<String> list = commandList.stream()
-                .map(Command::getEvent)
-                .map(Enum::name)
-                .peek(log::debug)
-                .collect(Collectors.toList());
-        log.debug("Count of commands implements Action: {}", list.size());
     }
 }

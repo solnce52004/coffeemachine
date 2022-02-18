@@ -3,6 +3,7 @@ package ru.example.coffeemachine.service.modelservice;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.entity.CoffeeMachine;
 import ru.example.coffeemachine.entity.Resource;
 import ru.example.coffeemachine.repo.CoffeeMachineRepository;
@@ -38,4 +39,30 @@ public class CoffeeMachineService {
                 .orElseGet(resourceService::createFull);
     }
 
+    public void checkAndUpdateResource(
+            States curState,
+            String curUUID,
+            String curID,
+            Long latestResourceId
+    ) {
+        Resource resource = resourceService.findById(latestResourceId);
+
+        final CoffeeMachine coffeeMachine = new CoffeeMachine()
+                .setMachineUUID(curUUID)
+                .setMachineId(curID)
+                .setState(curState)
+                .setResource(resource);
+
+        persistCoffeeMachine(coffeeMachine);
+    }
+
+    public void resetResource(
+            States curState,
+            String curUUID,
+            String curID
+    ) {
+        checkAndUpdateResource(
+                curState, curUUID, curID,
+                resourceService.createEmpty().getId());
+    }
 }

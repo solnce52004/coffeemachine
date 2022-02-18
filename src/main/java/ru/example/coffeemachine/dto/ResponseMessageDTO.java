@@ -3,6 +3,7 @@ package ru.example.coffeemachine.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import org.springframework.http.HttpStatus;
 import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 
@@ -16,4 +17,5 @@ public class ResponseMessageDTO implements Serializable {
     private String debug;
     private Events event;
     private States state;
+    private HttpStatus httpStatus;
 }

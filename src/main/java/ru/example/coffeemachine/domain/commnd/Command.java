@@ -9,7 +9,7 @@ public interface Command extends Action<States, Events> {
     Events getEvent();
 
     @Autowired
-    default void registerMySelf(RegisterCommand registerCommand){
-        registerCommand.register(getEvent(), this);
+    default void registerMySelf(CommandRegister commandRegister){
+        commandRegister.register(getEvent(), this);
     }
 }

@@ -102,6 +102,9 @@ logging:
         web: DEBUG
         data:
           jdbc: DEBUG
+        transaction: DEBUG
+        orm.jpa: DEBUG
+
 ---
 #PROD
 spring:

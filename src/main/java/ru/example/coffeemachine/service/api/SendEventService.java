@@ -1,84 +1,37 @@
 package ru.example.coffeemachine.service.api;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Service;
 import ru.example.coffeemachine.config.statemachine.enums.Events;
-import ru.example.coffeemachine.config.statemachine.enums.Guards;
-import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.config.statemachine.wrapper.SendWrapper;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
+import ru.example.coffeemachine.service.sender.Sender;
+import ru.example.coffeemachine.service.sender.SenderRegister;
+import ru.example.coffeemachine.util.LogHelper;
+
+import java.util.List;
 
 @Service
+@Slf4j
 public class SendEventService {
-    private final ResponseService responseService;
-    private final StateMachine<States, Events> stateMachine;
-    private final SendWrapper wrapper;
+    private final SenderRegister register;
+    private final SendWrapper stateMachineWrapper;
 
     @Autowired
     public SendEventService(
-            ResponseService responseService,
-            SendWrapper wrapper
+            SenderRegister register,
+            List<Sender> senders,
+            SendWrapper stateMachineWrapper
     ) {
-        this.responseService = responseService;
-        this.wrapper = wrapper;
-        this.stateMachine = wrapper.getStateMachine();
+        this.register = register;
+        this.stateMachineWrapper = stateMachineWrapper;
+        LogHelper.logSenderList(senders);
     }
 
-    public ResponseMessageDTO turnOn() {
-        putPrevStateInContext(stateMachine);
-        wrapper.sendMonoEvent(Events.PUSH_TURN_ON);
-
-        return responseService.getResponseMessageDTO(
-                stateMachine,
-                Events.PUSH_TURN_ON,
-                States.TURNED_ON
-        );
-    }
-
-    public ResponseMessageDTO checkResources() {
-        putPrevStateInContext(stateMachine);
-        wrapper.sendMonoEvent(Events.CHECK_RESOURCES);
-
-        return responseService.getResponseMessageDTO(
-                stateMachine,
-                Events.CHECK_RESOURCES,
-                States.CHECKED_RESOURCES
-        );
-    }
-
-    public ResponseMessageDTO startBrew() {
-        putPrevStateInContext(stateMachine);
-        //нажали кнопу - передаются внутренние команды датчикам
-        wrapper.sendMonoEvent(Events.PUSH_START_BREW);
-        //автоматически - начался процесс варки
-        wrapper.sendMonoEvent(Events.BREW);
-
-        return responseService.getResponseMessageDTO(
-                stateMachine,
-                Events.PUSH_START_BREW,
-                States.DONE
-        );
-    }
-
-    public ResponseMessageDTO turnOff() {
-        putPrevStateInContext(stateMachine);
-        wrapper.sendMonoEvent(Events.PUSH_TURN_OFF);
-
-        return responseService.getResponseMessageDTO(
-                stateMachine,
-                Events.PUSH_TURN_OFF,
-                States.TURNED_OFF
-        );
-    }
-
-    private void putPrevStateInContext(StateMachine<States, Events> stateMachine) {
-        stateMachine
-                .getExtendedState()
-                .getVariables()
-                .put(
-                        Guards.PREV_STATE.name(),
-                        stateMachine.getState().getId()
-                );
+    public ResponseMessageDTO send(Events event) {
+        return register
+                .getSender(event)
+                .sendEvent(stateMachineWrapper);
     }
 }
