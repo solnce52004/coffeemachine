@@ -1,7 +1,10 @@
 package ru.example.coffeemachine.controller;
 
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +15,28 @@ import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.dto.ResponseMessageDTO;
 import ru.example.coffeemachine.service.api.SendEventService;
 
+@Api(tags = "Check resources", value = "CheckResourcesController")
 @RestController
 @RequestMapping(
         path = "/api/v1",
         produces = MediaType.APPLICATION_JSON_VALUE)
-@Api(tags = "check resources", value = "CheckResourcesController")
 @AllArgsConstructor
 public class CheckResourcesController {
     private final SendEventService sendEventService;
 
-    @ApiOperation(value = "Проверка/пополнение ресурсов (вода, кофе)")
+    @Operation(method = "GET",
+            description = "Проверка/пополнение ресурсов (вода, кофе)",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Проверка/пополнение ресурсов успешно выполнена",
+                            content = {@Content(schema = @Schema(
+                                    implementation = ResponseMessageDTO.class))}),
+                    @ApiResponse(
+                            responseCode = "405",
+                            description = "Проверка/пополнение ресурсов не доступен",
+                            content = {@Content(schema = @Schema(
+                                    implementation = ResponseMessageDTO.class))})})
     @GetMapping("/check-resources")
     public ResponseEntity<ResponseMessageDTO> check() {
 
