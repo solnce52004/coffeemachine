@@ -1,7 +1,6 @@
 package ru.example.coffeemachine.service.sender;
 
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.statemachine.StateMachine;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import ru.example.coffeemachine.service.modelservice.CoffeeMachineService;
 
 @Service
 @Getter
-@Slf4j
 public class TurnOffSender implements Sender {
     private final Events event = Events.PUSH_TURN_OFF;
     private final States state = States.TURNED_OFF;

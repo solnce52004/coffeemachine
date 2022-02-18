@@ -67,7 +67,9 @@ public class Resource {
         if (this == o) return true;
         if (!(o instanceof Resource)) return false;
         Resource resource = (Resource) o;
-        return getResourceUUID().equals(resource.getResourceUUID()) && getWater().equals(resource.getWater()) && getCoffee().equals(resource.getCoffee());
+        return getResourceUUID().equals(resource.getResourceUUID()) &&
+                getWater().equals(resource.getWater()) &&
+                getCoffee().equals(resource.getCoffee());
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ru.example.coffeemachine.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ru.example.coffeemachine.config.statemachine.enums.Events;
 import ru.example.coffeemachine.config.statemachine.enums.States;
@@ -9,8 +11,9 @@ import ru.example.coffeemachine.service.sender.Sender;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
-public class LogHelper {
+public final class LogHelper {
     public static void logCommandList(List<Command> commandList) {
         final List<String> list = commandList.stream()
                 .map(Command::getEvent)

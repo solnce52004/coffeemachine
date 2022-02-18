@@ -28,7 +28,7 @@ public class SwaggerConfig {
 
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
-                .title("Spring Boot REST API by coffee machine")
+                .title("Spring Boot REST API for managing coffee machine")
                 .description("\"This is the best coffee machine in the world!\"")
                 .version("1.0.0")
                 .contact(new Contact(

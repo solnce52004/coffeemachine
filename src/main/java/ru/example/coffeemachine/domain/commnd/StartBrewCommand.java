@@ -12,7 +12,7 @@ import ru.example.coffeemachine.domain.CoffeeMachineImpl;
 @RequiredArgsConstructor
 @Slf4j
 public class StartBrewCommand implements Command {
-    private final CoffeeMachineImpl service;
+    private final CoffeeMachineImpl machine;
 
     @Override
     public Events getEvent() {
@@ -21,7 +21,7 @@ public class StartBrewCommand implements Command {
 
     @Override
     public void execute(StateContext<States, Events> context) {
-        service.pushStartBrew();
+        machine.pushStartBrew();
         log.info("Event: {}", context.getEvent());
     }
 }

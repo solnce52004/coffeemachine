@@ -67,11 +67,9 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
     generate-ddl: true
     show-sql: true
-    # решает ошибку ClassCastException EntityManagerHolder
     open-in-view: false
     hibernate:
       ddl-auto: none
-    #      use-new-id-generator-mappings: false
 
     properties:
       hibernate:
@@ -128,7 +126,6 @@ spring:
     open-in-view: false
     hibernate:
       ddl-auto: none
-    #      use-new-id-generator-mappings: false
 
     properties:
       hibernate:

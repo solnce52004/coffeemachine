@@ -1,7 +1,6 @@
 package ru.example.coffeemachine.service.modelservice;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.example.coffeemachine.config.statemachine.enums.States;
 import ru.example.coffeemachine.entity.CoffeeMachine;
@@ -12,7 +11,6 @@ import java.util.Optional;
 
 @Service
 @AllArgsConstructor
-@Slf4j
 public class CoffeeMachineService {
     private final ResourceService resourceService;
     private final CoffeeMachineRepository coffeeMachineRepository;

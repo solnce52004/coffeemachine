@@ -13,7 +13,7 @@ import ru.example.coffeemachine.domain.CoffeeMachineImpl;
 @RequiredArgsConstructor
 @Slf4j
 public class CheckResourcesCommand implements Command {
-    private final CoffeeMachineImpl service;
+    private final CoffeeMachineImpl machine;
 
     @Override
     public Events getEvent() {
@@ -22,7 +22,7 @@ public class CheckResourcesCommand implements Command {
 
     @Override
     public void execute(StateContext<States, Events> context) {
-        service.checkResources();
+        machine.checkResources();
 
         context.getExtendedState()
                 .getVariables()
